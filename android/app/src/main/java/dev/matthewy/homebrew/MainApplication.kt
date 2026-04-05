@@ -1,4 +1,4 @@
-package com.hmebrew
+package dev.matthewy.homebrew
 
 import android.app.Application
 import com.facebook.react.PackageList
