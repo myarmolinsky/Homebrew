@@ -107,22 +107,54 @@ public class StorageModule extends ReactContextBaseJavaModule {
         }
     }
 
+    private DocumentFile getDirectory(DocumentFile base, String path) {
+        String[] parts = path.split("/");
+
+        DocumentFile current = base;
+
+        for (String part : parts) {
+            if (part.isEmpty()) continue;
+
+            DocumentFile next = current.findFile(part);
+            if (next == null || !next.isDirectory()) {
+                return null;
+            }
+
+            current = next;
+        }
+
+        return current;
+    }
+
     @ReactMethod
-    public void listFiles(String folderUri, Promise promise) {
+    public void listFiles(String folderUri, String subPath, Promise promise) {
         try {
             Context context = getReactApplicationContext();
             Uri treeUri = Uri.parse(folderUri);
 
-            DocumentFile dir = DocumentFile.fromTreeUri(context, treeUri);
+            DocumentFile baseDir = DocumentFile.fromTreeUri(context, treeUri);
 
-            if (dir == null || !dir.exists()) {
+            if (baseDir == null || !baseDir.exists()) {
                 promise.reject("ERR", "Directory not found");
                 return;
             }
 
+            DocumentFile targetDir;
+
+            if (subPath == null || subPath.trim().isEmpty()) {
+                targetDir = baseDir;
+            } else {
+                targetDir = getDirectory(baseDir, subPath);
+                
+                if (targetDir == null || !targetDir.exists()) {
+                    promise.reject("ERR", "Subdirectory not found");
+                    return;
+                }
+            }
+
             WritableArray result = Arguments.createArray();
 
-            for (DocumentFile file : dir.listFiles()) {
+            for (DocumentFile file : targetDir.listFiles()) {
                 WritableMap item = Arguments.createMap();
                 item.putString("name", file.getName());
                 item.putString("uri", file.getUri().toString());

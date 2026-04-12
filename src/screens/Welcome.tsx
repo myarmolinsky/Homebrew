@@ -1,16 +1,14 @@
-import { Text, TouchableOpacity } from 'react-native';
+import { Button, Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export const Welcome = ({ onContinue }: { onContinue?: () => void }) => {
+export const Welcome = ({ onContinue }: { onContinue: () => void }) => {
   return (
     <SafeAreaView>
-      <Text>Welcome</Text>
+      <Text style={{ color: 'black' }}>Welcome</Text>
 
-      {onContinue && (
-        <TouchableOpacity onPress={onContinue}>
-          <Text>Continue</Text>
-        </TouchableOpacity>
-      )}
+      <Button onPress={onContinue} buttonColor="teal" textColor="white">
+        Continue
+      </Button>
     </SafeAreaView>
   );
 };

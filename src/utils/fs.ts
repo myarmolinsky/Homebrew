@@ -35,13 +35,14 @@ export const readFile = async (parentUri: string, name: string) => {
 };
 
 export const createFolder = async (parentUri: string, name: string) => {
-  return StorageModule.createFolder(parentUri, name);
+  StorageModule.createFolder(parentUri, name);
 };
 
 export const listFiles = async (
-  uri: string,
+  subpath: string = '',
 ): Promise<{ name: string; uri: string; isDirectory: boolean }[]> => {
-  return StorageModule.listFiles(uri);
+  const baseFolder = await getBaseFolder();
+  return StorageModule.listFiles(baseFolder, subpath);
 };
 
 export const deleteItem = async (uri: string) => {

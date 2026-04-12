@@ -7,7 +7,6 @@ export const Loading = () => {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#000',
       }}
     >
       <ActivityIndicator size="large" />
