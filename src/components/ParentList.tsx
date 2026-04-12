@@ -19,7 +19,7 @@ export const ParentList = <
 
   return (
     <View style={{ flex: 1, gap: 8 }}>
-      {parents.map(parent => (
+      {parents.map((parent) => (
         <Button
           key={parent.name}
           onPress={() => {

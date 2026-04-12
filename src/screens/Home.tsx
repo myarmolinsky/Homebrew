@@ -8,7 +8,7 @@ export const Home = () => {
   return (
     <ParentList
       parents={baseFolders}
-      renderContent={props => (
+      renderContent={(props) => (
         <View
           style={{
             alignItems: 'center',

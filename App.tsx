@@ -33,7 +33,7 @@ function App() {
       const existingFiles = await listFiles(uri);
       for (const folder of baseFolders) {
         if (
-          !existingFiles.some(ef => ef.name === folder.name && ef.isDirectory)
+          !existingFiles.some((ef) => ef.name === folder.name && ef.isDirectory)
         ) {
           await createFolder(uri, folder.name);
         }
