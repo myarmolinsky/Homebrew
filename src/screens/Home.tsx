@@ -1,6 +1,5 @@
 import React from 'react';
 import { ParentList } from '../components/ParentList';
-import { View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import { useQuery } from '@tanstack/react-query';
 import { Loading } from './Loading';
@@ -21,6 +20,8 @@ import {
   Users,
   WandSparkles,
 } from 'lucide-react-native';
+import { useNavigation } from '@react-navigation/native';
+import { NavProp } from '../utils/types';
 
 const baseFolders = [
   {
@@ -51,6 +52,7 @@ const baseFolders = [
 
 export const Home = () => {
   const theme = useTheme();
+  const navigation = useNavigation<NavProp>();
 
   const {
     data: ready,
@@ -72,7 +74,7 @@ export const Home = () => {
         if (
           !existingFiles.some((ef) => ef.name === folder.name && ef.isDirectory)
         ) {
-          await createFolder(baseFolder, folder.name);
+          await createFolder('', folder.name);
         }
       }
 
@@ -100,20 +102,13 @@ export const Home = () => {
   return (
     <ParentList
       parents={baseFolders}
-      getScreen={(baseFolder) => baseFolder.name}
+      // TODO: Don't use any here
+      navigate={(baseFolder) => navigation.navigate(baseFolder.name as any)}
       renderContent={(props) => (
-        <View
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            display: 'flex',
-            flexDirection: 'row',
-            gap: 8,
-          }}
-        >
+        <>
           <props.icon color={theme.colors.onSurface} />
           <Text style={{ fontSize: 18 }}>{props.name}</Text>
-        </View>
+        </>
       )}
     />
   );

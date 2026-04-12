@@ -23,28 +23,32 @@ export const setupFolder = async () => {
 };
 
 export const writeFile = async (
-  parentUri: string,
-  name: string,
+  subPath: string,
+  fileName: string,
   content: string,
 ) => {
-  return StorageModule.writeFile(parentUri, name, content);
+  const baseFolder = await getBaseFolder();
+  return StorageModule.writeFile(baseFolder, subPath, fileName, content);
 };
 
-export const readFile = async (parentUri: string, name: string) => {
-  return StorageModule.readFile(parentUri, name);
+export const readFile = async (subPath: string, fileName: string) => {
+  const baseFolder = await getBaseFolder();
+  return StorageModule.readFile(baseFolder, subPath, fileName);
 };
 
-export const createFolder = async (parentUri: string, name: string) => {
-  StorageModule.createFolder(parentUri, name);
+export const createFolder = async (subPath: string, name: string) => {
+  const baseFolder = await getBaseFolder();
+  StorageModule.createFolder(baseFolder, subPath, name);
 };
 
 export const listFiles = async (
-  subpath: string = '',
+  subPath: string = '',
 ): Promise<{ name: string; uri: string; isDirectory: boolean }[]> => {
   const baseFolder = await getBaseFolder();
-  return StorageModule.listFiles(baseFolder, subpath);
+  return StorageModule.listFiles(baseFolder, subPath);
 };
 
-export const deleteItem = async (uri: string) => {
-  return StorageModule.delete(uri);
+export const deleteItem = async (subPath: string, name: string) => {
+  const baseFolder = await getBaseFolder();
+  return StorageModule.delete(baseFolder, subPath, name);
 };

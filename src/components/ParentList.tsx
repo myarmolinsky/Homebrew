@@ -1,8 +1,8 @@
-import { useNavigation } from '@react-navigation/native';
 import { Plus } from 'lucide-react-native';
 import React from 'react';
 import { View } from 'react-native';
-import { Button, Text, useTheme } from 'react-native-paper';
+import { Text, useTheme } from 'react-native-paper';
+import { Button } from './Button';
 
 export const ParentList = <
   T extends {
@@ -10,50 +10,33 @@ export const ParentList = <
   },
 >({
   parents,
-  getScreen,
+  navigate,
   renderContent,
   onCreateNew,
 }: {
   parents: Array<T>;
-  getScreen: (parent: T) => string;
+  navigate: (parent: T) => void;
   renderContent: (props: T) => React.JSX.Element;
   onCreateNew?: () => void;
 }) => {
-  const navigation = useNavigation();
   const theme = useTheme();
 
   return (
-    <View style={{ flex: 1, gap: 8 }}>
+    <View style={{ gap: 8 }}>
       {onCreateNew && (
-        <Button
-          onPress={onCreateNew}
-          mode="contained"
-          buttonColor="teal"
-          contentStyle={{ margin: 20 }}
-        >
-          <View
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              display: 'flex',
-              flexDirection: 'row',
-              gap: 8,
-            }}
-          >
-            <Plus color={theme.colors.onSurface} />
-            <Text style={{ fontSize: 18 }}>Create New</Text>
-          </View>
+        <Button onPress={onCreateNew}>
+          <Plus color={theme.colors.onSurface} />
+          <Text style={{ fontSize: 18, color: theme.colors.onSurface }}>
+            Create New
+          </Text>
         </Button>
       )}
       {parents.map((parent) => (
         <Button
           key={parent.name}
           onPress={() => {
-            navigation.navigate(getScreen(parent) as never);
+            navigate(parent);
           }}
-          mode="contained"
-          buttonColor="teal"
-          contentStyle={{ margin: 20 }}
         >
           {renderContent(parent)}
         </Button>
